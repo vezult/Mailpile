@@ -18,7 +18,8 @@ BINARIES = {}
 BINARIES_WANTED = {
     'GnuPG':   ['gpg', '--version'],
     'OpenSSL': ['openssl', 'version'],
-    'Tor':     ['tor', '--version']}
+    'Tor':     ['tor', '--version'],
+    'Firejail': ['firejail', '--version']}
 
 
 def _assert_file_exists(path):
