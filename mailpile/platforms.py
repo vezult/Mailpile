@@ -150,3 +150,5 @@ def RandomListeningPort(count=1, host='127.0.0.1'):
     finally:
         for sock in socks:
             sock.close()
+
+DetectBinaries()
