@@ -28,6 +28,7 @@ import thread
 import threading
 
 import mailpile.platforms
+from mailpile.sandbox import Sandbox
 
 
 Unsafe_Popen = subprocess.Popen
@@ -36,6 +37,9 @@ PIPE = subprocess.PIPE
 SERIALIZE_POPEN_STRICT = True
 SERIALIZE_POPEN_ALWAYS = False
 SERIALIZE_POPEN_LOCK = threading.Lock()
+SANDBOX_REQUIRED = 'required'
+SANDBOX_DESIRED = 'desired'
+SANDBOX_PROHIBITED = 'prohibited'
 
 THREAD_LOCAL = threading.local()
 
@@ -97,8 +101,17 @@ class Safe_Popen(Unsafe_Popen):
                              startupinfo=None,
                              creationflags=None,
                              keep_open=None,
-                             long_running=False):
+                             long_running=False,
+                             sandbox=SANDBOX_DESIRED):
 
+
+        # If the caller explicitly requires a sanbox, raise an error rather
+        # than silently ignoring the directive
+        if not Sandbox and sandbox == SANDBOX_REQUIRED:
+            raise RuntimeError("Sandbox required, but no sandboxing "
+                    "method is available!")
+
+        use_sandbox = Sandbox and sandbox != SANDBOX_PROHIBITED
         self._internal_fds = []
 
         # Windows-work around: Console Handles can't be inherited, so if no
@@ -131,6 +144,11 @@ class Safe_Popen(Unsafe_Popen):
         close_fds = preset.get('close_fds', close_fds)
         executable = preset.get('executable', executable)
         long_running = preset.get('long_running', long_running)
+
+        if use_sandbox:
+            cmd = Sandbox(executable).cmd()
+            executable = cmd[0]
+            args = cmd[1:] + list(args)
 
         # Set our default locking strategy
         self._SAFE_POPEN_hold_lock = SERIALIZE_POPEN_ALWAYS
