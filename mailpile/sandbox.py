@@ -1,4 +1,4 @@
-import platforms
+import mailpile.platforms
 
 
 class SandboxBase(object):
@@ -10,7 +10,7 @@ class SandboxBase(object):
 
     @classmethod
     def available(cls):
-        return platforms.DetectBinaries(which=cls.sandbox_binary) is not None
+        return mailpile.platforms.DetectBinaries(which=cls.sandbox_binary) is not None
 
     def _build_args(self):
         if self.binary:
@@ -22,7 +22,7 @@ class SandboxBase(object):
         return []
 
     def cmd(self):
-        sandbox_path = platforms.DetectBinaries(which=self.sandbox_binary)
+        sandbox_path = mailpile.platforms.DetectBinaries(which=self.sandbox_binary)
 
         if not sandbox_path:
             return [self.binary]
