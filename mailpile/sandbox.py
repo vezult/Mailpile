@@ -56,7 +56,7 @@ class Firejail(SandboxBase):
                 'private-tmp': None}
 
         if self.RESTRICT_NETWORK in self.restrictions:
-            kwargs['net'] = 'None'
+            kwargs['net'] = 'none'
 
         if self.RESTRICT_FILE_WRITE in self.restrictions:
             kwargs['whitelist'] = '/tmp'
