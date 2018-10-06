@@ -37,8 +37,9 @@ PIPE = subprocess.PIPE
 SERIALIZE_POPEN_STRICT = True
 SERIALIZE_POPEN_ALWAYS = False
 SERIALIZE_POPEN_LOCK = threading.Lock()
+
 SANDBOX_REQUIRED = 'required'
-SANDBOX_DESIRED = 'desired'
+SANDBOX_PREFERRED = 'preferred'
 SANDBOX_PROHIBITED = 'prohibited'
 
 THREAD_LOCAL = threading.local()
@@ -102,7 +103,7 @@ class Safe_Popen(Unsafe_Popen):
                              creationflags=None,
                              keep_open=None,
                              long_running=False,
-                             sandbox=SANDBOX_DESIRED):
+                             sandbox=SANDBOX_PREFERRED):
 
 
         # If the caller explicitly requires a sanbox, raise an error rather
