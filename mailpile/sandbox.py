@@ -51,9 +51,9 @@ class Firejail(SandboxBase):
         super(Firejail, self).__init__(binary, restrictions=restrictions)
 
     def _build_switches(self):
-        kwargs = {'noroot': None,
-                'nonewprivs': None,
-                'private-tmp': None}
+        kwargs = {'quiet': None,
+                'noroot': None,
+                'nonewprivs': None}
 
         if self.RESTRICT_NETWORK in self.restrictions:
             kwargs['net'] = 'none'
