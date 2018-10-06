@@ -59,7 +59,6 @@ class Firejail(SandboxBase):
             kwargs['net'] = 'none'
 
         if self.RESTRICT_FILE_WRITE in self.restrictions:
-            kwargs['whitelist'] = '/tmp'
             kwargs['read-only'] = '/'
 
         if self.RESTRICT_DEVICES in self.restrictions:
