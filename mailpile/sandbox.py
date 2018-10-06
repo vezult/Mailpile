@@ -67,7 +67,7 @@ class Firejail(SandboxBase):
 
         for key, val in kwargs.iteritems():
             if val:
-                yield '--%s="%s"' % (key, val)
+                yield '--%s=%s' % (key, val)
             else:
                 yield '--%s' % key
 
