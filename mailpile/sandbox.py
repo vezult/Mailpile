@@ -53,7 +53,11 @@ class Firejail(SandboxBase):
     def _build_switches(self):
         kwargs = {'quiet': None,
                 'noroot': None,
-                'nonewprivs': None}
+                'nonewprivs': None,
+                'caps.drop': 'all',
+                'x11': 'none',
+                'nosound': None,
+                'no3d': None}
 
         if self.RESTRICT_NETWORK in self.restrictions:
             kwargs['net'] = 'none'
