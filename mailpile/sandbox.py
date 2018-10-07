@@ -45,8 +45,7 @@ class Firejail(SandboxBase):
 
     def __init__(self, binary, restrictions=None):
         if not restrictions:
-            restrictions = [self.RESTRICT_NETWORK, self.RESTRICT_FILE_WRITE,
-                    self.RESTRICT_DEVICES]
+            restrictions = [self.RESTRICT_NETWORK, self.RESTRICT_DEVICES]
 
         super(Firejail, self).__init__(binary, restrictions=restrictions)
 
@@ -63,7 +62,9 @@ class Firejail(SandboxBase):
             kwargs['net'] = 'none'
 
         if self.RESTRICT_FILE_WRITE in self.restrictions:
-            kwargs['read-only'] = '/'
+            # Note that user home remains writeable due to firejail
+            # defaults.
+            kwargs['read-only'] = '~'
 
         if self.RESTRICT_DEVICES in self.restrictions:
             kwargs['private-dev'] = None
