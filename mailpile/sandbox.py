@@ -50,26 +50,26 @@ class Firejail(SandboxBase):
         super(Firejail, self).__init__(binary, restrictions=restrictions)
 
     def _build_switches(self):
-        kwargs = {'quiet': None,
-                'noroot': None,
-                'nonewprivs': None,
-                'caps.drop': 'all',
-                'x11': 'none',
-                'nosound': None,
-                'no3d': None}
+        kwargs = [('quiet', None),
+                ('noroot', None),
+                ('nonewprivs', None),
+                ('caps.drop', 'all'),
+                ('x11', 'none'),
+                ('nosound', None),
+                ('no3d', None)]
 
         if self.RESTRICT_NETWORK in self.restrictions:
-            kwargs['net'] = 'none'
+            kwargs.append(('net', 'none'))
 
         if self.RESTRICT_FILE_WRITE in self.restrictions:
             # Note that user home remains writeable due to firejail
             # defaults.
-            kwargs['read-only'] = '~'
+            kwargs.append(('read-only', '~'))
 
         if self.RESTRICT_DEVICES in self.restrictions:
-            kwargs['private-dev'] = None
+            kwargs.append(('private-dev', None))
 
-        for key, val in kwargs.iteritems():
+        for key, val in kwargs:
             if val:
                 yield '--%s=%s' % (key, val)
             else:
